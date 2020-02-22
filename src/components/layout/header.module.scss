@@ -5,4 +5,12 @@
   justify-content: space-between;
   color: $white;
   padding: 2rem 0;
+
+  &__logo {
+    color: $white;
+    &:hover {
+      color: $white;
+      text-decoration: none;
+    }
+  }
 }

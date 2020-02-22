@@ -1,0 +1,35 @@
+{
+  "nav": [{"link":"Home", "to": "/", "exact": true }, {"link":"About", "to": "/about"}, {"link":"Privacy", "to": "/privacy"}],
+  "images": {
+    "slider": ["images/longImg.jpg"]
+  },
+  "goods": [
+    {
+      "src": "images/blue.jpg",
+      "title": "Title",
+      "text": [
+        "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Corporis, libero ipsa eos praesentium quos quis ad veritatis mollitia ea impedit id tempore eius repudiandae odio beatae? Sit animi laboriosam quia.",
+        "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Corporis, libero ipsa eos praesentium quos quis ad veritatis mollitia ea impedit id tempore eius repudiandae odio beatae? Sit animi laboriosam quia."
+      ],
+      "reverse": false
+    },
+    {
+      "src": "images/brown.jpg",
+      "title": "Title",
+      "text": [
+        "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Corporis, libero ipsa eos praesentium quos quis ad veritatis mollitia ea impedit id tempore eius repudiandae odio beatae? Sit animi laboriosam quia.",
+        "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Corporis, libero ipsa eos praesentium quos quis ad veritatis mollitia ea impedit id tempore eius repudiandae odio beatae? Sit animi laboriosam quia."
+      ],
+      "reverse": true
+    },
+    {
+      "src": "images/yellow.jpg",
+      "title": "Title",
+      "text": [
+        "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Corporis, libero ipsa eos praesentium quos quis ad veritatis mollitia ea impedit id tempore eius repudiandae odio beatae? Sit animi laboriosam quia.",
+        "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Corporis, libero ipsa eos praesentium quos quis ad veritatis mollitia ea impedit id tempore eius repudiandae odio beatae? Sit animi laboriosam quia."
+      ],
+      "reverse": false
+    }
+  ]
+}

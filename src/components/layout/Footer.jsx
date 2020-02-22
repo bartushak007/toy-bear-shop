@@ -4,13 +4,21 @@ import FontIcon from "../shared/font-icon";
 import style from "./footer.module.scss";
 import { NavLink } from "react-router-dom";
 
-const Footer = ({}) => {
+const Footer = ({ nav, t }) => {
   return (
     <div className={style.footer}>
       <div>
-        <NavLink to="/">Home</NavLink>
-        <NavLink to="/about">About</NavLink>
-        <NavLink to="/Nolink">Nolink</NavLink>
+        {nav.map(({ link, to, exact }) => (
+          <NavLink
+            exact={exact}
+            key={link+to}
+            className={style.nav}
+            activeClassName={style.nav__active}
+            to={to}
+          >
+            {t(link)}
+          </NavLink>
+        ))}
       </div>
       <ListGroup horizontal>
         <div className={style.footer__icon}>

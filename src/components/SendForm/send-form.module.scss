@@ -1,0 +1,29 @@
+@import'../../assets/css/main.scss';
+
+.sendForm {
+  max-width: 300px;
+  width: 100%;
+  padding: 40px 0;
+  &__field {
+    border: 0;
+    background: $white;
+    padding: 7px;
+    border-radius: 4px;
+  }
+  &__fieldContainer{
+    display: flex;
+    flex-direction: column;
+  }
+  &__send {
+    margin-top: 10px;
+    align-self: flex-end;
+    background: $lightBlue;
+    border: 0;   
+    padding: 7px;
+    border-radius: 4px;
+  }
+}
+
+.error {
+  box-shadow: 0px 0px 5px 0px $red;
+}

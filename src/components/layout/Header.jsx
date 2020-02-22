@@ -2,6 +2,7 @@ import React from "react";
 import { withTranslation } from "react-i18next";
 import i18next from "i18next";
 import { Dropdown, DropdownButton } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 import style from "./header.module.scss";
 
@@ -11,9 +12,9 @@ function Header({ t }) {
   return (
     <div className={style.header}>
       <div>
-        <h1 onClick={() => i18next.changeLanguage("ua")}>
-          {t("welcom-title")}
-        </h1>
+        <Link className={style.header__logo} to="/">
+          <h1>{t("welcom-title")}</h1>
+        </Link>
       </div>
       <div lg="2">
         <DropdownButton title={i18next.language} variant={"info"}>

@@ -29,24 +29,25 @@
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     </script>
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/emailjs-com@2.3.2/dist/email.min.js"></script>
+    <!-- <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/emailjs-com@2.3.2/dist/email.min.js"></script>
     <script type="text/javascript">
        (function(){
+         window['emailjs']= emailjs;
           emailjs.init("user_DNvGDlLmJeKu6MUJMWsRd");
        })();
-    </script>
-    <script type="text/javascript">
+    </script> -->
+    <!-- <script type="text/javascript">
         window.onload = function() {
             document.getElementById('contact-form').addEventListener('submit', function(event) {
                 event.preventDefault();
                 // generate the contact number value
                 this.contact_number.value = Math.random() * 100000 | 0;
                 console.log(this.querySelector('.xxx').value)
-                emailjs.sendForm('contact_service', 'contact_template', this);
+                emailjs.sendForm('iryna', 'template_Q0cWPtxM', this);
                 // emailjs.sendForm('contact_service', 'contact_form', this);
             });
         }
-    </script>
+    </script> -->
     <div id="root"></div>
 
     <!--
