@@ -1,20 +1,20 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
-
+import en from "./assets/translations/en.json";
+import ua from "./assets/translations/ua.json";
+import ru from "./assets/translations/ru.json";
 // the translations
 // (tip move them in a JSON file and import them)
 const resources = {
   en: {
-    translation: {
-      "Welcome to React": "Welcome to React and react-i18next"
-    }
+    translation: en
+  },
+  ua: {
+    translation: ua
+  },
+  ru: {
+    translation: ru
   }
-  // ,
-  // ua: {
-  //   translation: {
-  //     "Welcome to React": "777777777777777777777777777777777"
-  //   }
-  // }
 };
 
 i18n
@@ -22,6 +22,7 @@ i18n
   .init({
     resources,
     lng: "en",
+    fallbackLng: ["en", "ua", "ru"],
 
     keySeparator: false, // we do not use keys in form messages.welcome
 
@@ -30,4 +31,4 @@ i18n
     }
   });
 
-  export default i18n;
+export default i18n;

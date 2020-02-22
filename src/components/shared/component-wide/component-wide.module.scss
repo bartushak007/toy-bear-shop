@@ -1,0 +1,12 @@
+.componentWide {
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+
+  &__inner {
+    max-width: 1536px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 2rem;
+  }
+}

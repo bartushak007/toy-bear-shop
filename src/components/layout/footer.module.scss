@@ -1,0 +1,20 @@
+@import'../../assets/css/main.scss';
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: $white;
+  padding: 4rem 0 4rem 0;
+
+  &__icon {
+    font-size: 2rem;
+    transition: 0.3s;
+    margin-right: 10px;
+
+    &:hover {
+      cursor: pointer;
+      color: $grey;
+    }
+  }
+}

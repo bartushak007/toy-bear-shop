@@ -1,0 +1,8 @@
+@import './normalize';
+@import './variables';
+@import './fonts';
+@import './basic/basic';
+
+body {
+  background: $light-gray !important;
+}
