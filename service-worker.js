@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/toy-bear-shop/precache-manifest.524a1035260aee5bdf519dae35631e5b.js"
+  "/toy-bear-shop/precache-manifest.3bd27efaf3830abe594e2bf7f7b04443.js"
 );
 
 self.addEventListener('message', (event) => {
