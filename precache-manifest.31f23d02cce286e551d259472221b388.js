@@ -1,27 +1,27 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "3d35053632a5bf9637b568e39b22acb0",
+    "revision": "0b67ed4ae9d6c41300bbf74b0098742f",
     "url": "/toy-bear-shop/index.html"
   },
   {
-    "revision": "d619790d0ef730d99bbc",
+    "revision": "07b5fcb27478c4ffe727",
     "url": "/toy-bear-shop/static/css/2.47e06e2e.chunk.css"
   },
   {
-    "revision": "a24f859a83ddce4de0b2",
+    "revision": "2532b7d2af9b9cb15718",
     "url": "/toy-bear-shop/static/css/main.d90f9295.chunk.css"
   },
   {
-    "revision": "d619790d0ef730d99bbc",
-    "url": "/toy-bear-shop/static/js/2.0c3ad06d.chunk.js"
+    "revision": "07b5fcb27478c4ffe727",
+    "url": "/toy-bear-shop/static/js/2.82627f4c.chunk.js"
   },
   {
     "revision": "299cba5f6c747cbc295097594263041b",
-    "url": "/toy-bear-shop/static/js/2.0c3ad06d.chunk.js.LICENSE.txt"
+    "url": "/toy-bear-shop/static/js/2.82627f4c.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "a24f859a83ddce4de0b2",
-    "url": "/toy-bear-shop/static/js/main.c3be3545.chunk.js"
+    "revision": "2532b7d2af9b9cb15718",
+    "url": "/toy-bear-shop/static/js/main.22f0dc65.chunk.js"
   },
   {
     "revision": "51d283760c6254cb84fb",
