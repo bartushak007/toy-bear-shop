@@ -6,6 +6,7 @@ import Slider from "../components/slider";
 import SendFrom from "../components/SendForm";
 import ShowBlock from "../components/show-block";
 import Image from "../components/shared/image";
+import TestApiShop from "../components/TestApiShop"
 import { DataContext } from "../index";
 
 const Home = ({ t }) => {
@@ -14,6 +15,7 @@ const Home = ({ t }) => {
     <div>
       {/* <Slider /> */}
       <Image src={data.images.slider[0]} />
+      <TestApiShop/>
       <ComponentWide backgroundColor="#ccc">
         <SendFrom />
       </ComponentWide>
