@@ -7,22 +7,49 @@ import { DataContext } from "../index";
 
 const TestApiShop = ({ t }) => {
   const [data, setData] = useState([]);
-  React.useEffect(() => {
+  React.useEffect(async () => {
     try {
-      fetch(
+      const response = await fetch(
         "https://shop-app-brtshk.herokuapp.com/api/products"
-      ).then(res => res.json()).then(console.log)
-
-      // const response = await fetch(
-      //   "https://shop-app-brtshk.herokuapp.com/api/products"
-      // );
-      // const dataResponse = await response.json();
-      // setData(dataResponse);
+      );
+      const dataResponse = await response.json();
+      setData(dataResponse.data);
     } catch (e) {
       console.log(e);
     }
   }, []);
-return <ComponentWide backgroundColor="#ccc">{console.log(data)}</ComponentWide>;
+  return (
+    <ComponentWide backgroundColor="#ccc">
+      <table style={{margin:"0 auto", maxWidth: "700px", width: "100%"}}>
+        <tbody>
+          {data.map(
+            ({
+              _id,
+              productName,
+              description,
+              urlImage,
+              quantity,
+              added,
+              characteristic,
+              price,
+              asset
+            }) => (
+              <tr key={_id}>
+                <td>{productName}</td>
+                <td>{description}</td>
+                <td>{quantity}</td>
+                <td>{characteristic}</td>
+                <td>{added}</td>
+                <td>
+                  {price} {asset}
+                </td>
+              </tr>
+            )
+          )}
+        </tbody>
+      </table>
+    </ComponentWide>
+  );
 };
 
 export default withTranslation()(TestApiShop);
