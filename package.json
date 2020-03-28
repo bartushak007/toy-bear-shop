@@ -1,5 +1,5 @@
 {
-  "name": "toy-bear-shop",
+  "name": "shop",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -14,13 +14,22 @@
     "emailjs-com": "^2.4.1",
     "gh-pages": "^2.2.0",
     "i18next": "^19.3.1",
+    "lodash": "^4.17.15",
+    "moment": "^2.24.0",
     "node-sass": "^4.13.1",
     "react": "^16.12.0",
     "react-bootstrap": "^1.0.0-beta.16",
     "react-dom": "^16.12.0",
     "react-i18next": "^11.3.3",
+    "react-modal": "^3.11.2",
+    "react-redux": "^7.2.0",
     "react-router-dom": "^5.1.2",
-    "react-scripts": "3.4.0"
+    "react-scripts": "3.4.0",
+    "redux": "^4.0.5",
+    "redux-actions": "^2.6.5",
+    "redux-logger": "^3.0.6",
+    "redux-saga": "^1.1.3",
+    "reselect": "^4.0.0"
   },
   "scripts": {
     "predeploy": "npm run build",
@@ -45,5 +54,5 @@
       "last 1 safari version"
     ]
   },
-  "homepage": "https://bartushak007.github.io/toy-bear-shop/"
+  "homepage": "https://bartushak007.github.io/shop/"
 }

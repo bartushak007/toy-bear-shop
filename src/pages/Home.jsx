@@ -1,4 +1,6 @@
 import React, { useContext } from "react";
+import { compose } from "redux";
+import { connect } from "react-redux";
 import { withTranslation } from "react-i18next";
 import {} from "react-bootstrap";
 import ComponentWide from "../components/shared/component-wide";
@@ -6,26 +8,29 @@ import Slider from "../components/slider";
 import SendFrom from "../components/SendForm";
 import ShowBlock from "../components/show-block";
 import Image from "../components/shared/image";
-import TestApiShop from "../components/TestApiShop"
+import Layout from "../components/layout";
 import { DataContext } from "../index";
 
-const Home = ({ t }) => {
+const Home = ({ t, ...props }) => {
   const data = useContext(DataContext);
   return (
-    <div>
-      {/* <Slider /> */}
-      <Image src={data.images.slider[0]} />
-      <TestApiShop/>
-      <ComponentWide backgroundColor="#ccc">
-        <SendFrom />
-      </ComponentWide>
-      {data.goods.map((product, i) => (
-        <ComponentWide key={i + product.src}>
-          <ShowBlock {...product} />
+    <Layout>
+      <Layout.Header />
+      <div>
+        {/* <Slider /> */}
+        <Image src={data.images.slider[0]} />
+        <ComponentWide backgroundColor="#ccc">
+          <SendFrom />
         </ComponentWide>
-      ))}
-    </div>
+        {data.goods.map((product, i) => (
+          <ComponentWide key={i + product.src}>
+            <ShowBlock {...product} />
+          </ComponentWide>
+        ))}
+      </div>
+      <Layout.Footer />
+    </Layout>
   );
 };
 
-export default withTranslation()(Home);
+export default withTranslation()(connect(store => ({ ...store }))(Home));

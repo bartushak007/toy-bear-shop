@@ -1,4 +1,4 @@
-This project was bootstrapped with [Create React App](https://bartushak007.github.io/toy-bear-shop/).
+This project was bootstrapped with [Create React App](https://bartushak007.github.io/shop/).
 
 ## Available Scripts
 

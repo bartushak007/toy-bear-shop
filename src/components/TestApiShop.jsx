@@ -7,17 +7,17 @@ import { DataContext } from "../index";
 
 const TestApiShop = ({ t }) => {
   const [data, setData] = useState([]);
-  React.useEffect(async () => {
-    try {
-      const response = await fetch(
-        "https://shop-app-brtshk.herokuapp.com/api/products"
-      );
-      const dataResponse = await response.json();
-      setData(dataResponse.data);
-    } catch (e) {
-      console.log(e);
-    }
-  }, []);
+  // React.useEffect(async () => {
+  //   try {
+  //     const response = await fetch(
+  //       "https://shop-app-brtshk.herokuapp.com/api/products"
+  //     );
+  //     const dataResponse = await response.json();
+  //     setData(dataResponse.data);
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  // }, []);
   return (
     <ComponentWide backgroundColor="#ccc">
       <table style={{margin:"0 auto", maxWidth: "700px", width: "100%"}}>

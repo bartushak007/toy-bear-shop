@@ -1,17 +1,21 @@
 import React, { createContext } from "react";
+import { Provider } from "react-redux";
 import ReactDOM from "react-dom";
 import App from "./App";
 import "./i18n";
 import * as serviceWorker from "./serviceWorker";
 import "bootstrap/dist/css/bootstrap.min.css";
 import data from "./data.json";
+import store from "./store";
 
 export const DataContext = React.createContext({});
 
 ReactDOM.render(
-  <DataContext.Provider value={data}>
-    <App />
-  </DataContext.Provider>,
+  <Provider store={store}>
+    <DataContext.Provider value={data}>
+      <App />
+    </DataContext.Provider>
+  </Provider>,
   document.getElementById("root")
 );
 
