@@ -1,14 +1,20 @@
 import { handleActions, createAction } from "redux-actions";
 import { all, call, put, take, fork } from "redux-saga/effects";
 import { createSelector } from "reselect";
-
+import { apiClient } from "../api/client";
 const REDUCER_NAME = "user";
 
 const LOGIN_REQUEST = "USER/LOGIN_REQUEST";
+const LOGIN_SUCCSESS = "USER/LOGIN_SUCCESS";
+const REGISTER_REQUEST = "USER/REGISTER_REQUEST";
+const REGISTER_SUCCESS = "USER/REGISTER_SUCCESS";
 const SET_USER = "USER/SET_USER";
 const LOG_OUT = "USER/LOG_OUT";
 
+export const registerRequest = createAction(REGISTER_REQUEST);
+export const registerSuccess = createAction(REGISTER_SUCCESS);
 export const loginRequest = createAction(LOGIN_REQUEST);
+export const loginSuccess = createAction(LOGIN_SUCCSESS);
 export const setUser = createAction(SET_USER);
 export const logOut = createAction(LOG_OUT);
 
@@ -24,16 +30,28 @@ const initialState = {
 
 export default handleActions(
   {
-    [loginRequest]: (state, payload) => {
+    [loginRequest]: (state) => {
       return { ...state, load: true };
     },
-    [setUser]: (state, { payload }) => ({ ...state, load: false, ...payload }),
-    [logOut]: () => initialState
+    [loginSuccess]: (state) => {
+      return { ...state, load: false };
+    },
+    [setUser]: (state, { payload }) => ({ ...state, ...payload }),
+    [logOut]: () => initialState,
+    [registerRequest]: state => ({
+      ...state,
+      loadRegister: true
+    }),
+    [registerSuccess]: state => ({
+      ...state,
+      loadRegister: false
+    })
   },
   initialState
 );
 
 export const userSelector = state => state[REDUCER_NAME];
+export const loadRegisterSelector = state => state[REDUCER_NAME].loadRegister;
 
 // export function* getUserInfo() {
 //   while (true) {
@@ -61,25 +79,46 @@ export function* loginRequestSaga() {
     } = yield take(loginRequest);
 
     try {
-      const response = yield fetch(
-        "https://shop-app-brtshk.herokuapp.com/api/authentication/auth",
-        {
-          method: "POST",
-          body: JSON.stringify({ login, password }),
-          headers: {
-            "Content-Type": "application/json"
-          }
-        }
-      );
-      const data = yield response.json();
-      if (!data.success) throw new Error();
+      const data = yield apiClient({
+        params: { login, password },
+        url: "https://shop-app-brtshk.herokuapp.com/api/authentication/auth",
+        method: "post"
+      });
       yield put(setUser({ token: data.token, ...data.data }));
+      yield put(loginSuccess());
       localStorage.setItem(
         "user",
-        JSON.stringify({user : { token: data.token, ...data.data }})
+        JSON.stringify({ user: { token: data.token, ...data.data } })
       );
     } catch (e) {
-      console.error(e);
+      console.error('authentication/auth', e);
+      yield put(loginSuccess());
+    }
+  }
+}
+
+
+export function* registerRequestSaga() {
+  while (true) {
+    const {
+      payload
+    } = yield take(registerRequest);
+
+    try {
+      const data = yield apiClient({
+        params: {...payload, "dateOfBirth": "21.04.91"},
+        url: "https://shop-app-brtshk.herokuapp.com/api/authentication/register",
+        method: "post"
+      });
+      
+      yield put(registerSuccess());
+      localStorage.setItem(
+        "user",
+        JSON.stringify({ user: { token: data.token, ...data.data } })
+      );
+    } catch (e) {
+      console.error('authentication/register', e);
+      yield put(registerSuccess());
     }
   }
 }
@@ -92,5 +131,5 @@ export function* logOutSaga() {
 }
 
 export function* saga() {
-  yield all([loginRequestSaga(), logOutSaga()]);
+  yield all([loginRequestSaga(), logOutSaga(), registerRequestSaga()]);
 }
