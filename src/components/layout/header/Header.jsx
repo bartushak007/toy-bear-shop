@@ -2,13 +2,14 @@ import React from "react";
 import { withTranslation } from "react-i18next";
 import i18next from "i18next";
 import { Dropdown, DropdownButton } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import ComponentWide from "../../shared/component-wide";
 import style from "./header.module.scss";
 import { logOut, userSelector } from "../../../reducers/user";
 import { connect } from "react-redux";
+import { compose } from "redux";
 
-function Header({ t, user, logOut }) {
+function Header({ t, user, logOut, history }) {
   const { languages } = i18next;
 
   return (
@@ -34,9 +35,19 @@ function Header({ t, user, logOut }) {
           </DropdownButton>
 
           {user.name ? (
-            <button onClick={logOut}>Log out</button>
+            <DropdownButton title={user.name} variant={"info"}>
+              <Dropdown.Item onClick={logOut}>Log out</Dropdown.Item>
+              <Dropdown.Item
+                onClick={() => history && history.push("/user/profile")}
+              >
+                Profile
+              </Dropdown.Item>
+            </DropdownButton>
           ) : (
-            <Link to="/login">Login</Link>
+            <>
+              <Link to="/authentication/login">Login</Link> /
+              <Link to="/authentication/registration">Registration</Link>
+            </>
           )}
         </div>
       </div>
@@ -44,6 +55,8 @@ function Header({ t, user, logOut }) {
   );
 }
 
-export default withTranslation()(
-  connect(state => ({ user: userSelector(state) }), { logOut })(Header)
+export default withRouter(
+  withTranslation()(
+    connect(state => ({ user: userSelector(state) }), { logOut })(Header)
+  )
 );

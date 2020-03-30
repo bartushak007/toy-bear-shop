@@ -20,6 +20,7 @@ export const logOut = createAction(LOG_OUT);
 
 const initialState = {
   load: false,
+  loadRegister: false,
   id: "",
   name: "",
   secondName: "",
@@ -30,10 +31,10 @@ const initialState = {
 
 export default handleActions(
   {
-    [loginRequest]: (state) => {
+    [loginRequest]: state => {
       return { ...state, load: true };
     },
-    [loginSuccess]: (state) => {
+    [loginSuccess]: state => {
       return { ...state, load: false };
     },
     [setUser]: (state, { payload }) => ({ ...state, ...payload }),
@@ -52,25 +53,6 @@ export default handleActions(
 
 export const userSelector = state => state[REDUCER_NAME];
 export const loadRegisterSelector = state => state[REDUCER_NAME].loadRegister;
-
-// export function* getUserInfo() {
-//   while (true) {
-//     yield take(getUserInfoRequest);
-//     const request = axiosClient();
-//     try {
-//       const response = yield call(() => request.get("/api/users/info"));
-//       const { data } = response;
-//       // console.log(data)
-//       yield put(setUserInfo(data));
-//       yield put(setUserWasResponse(true));
-//       yield put(userInfoSuccess());
-//     } catch (err) {
-//       yield put(userInfoSuccess());
-//       yield put(setUserWasResponse(true));
-//       console.log(err);
-//     }
-//   }
-// }
 
 export function* loginRequestSaga() {
   while (true) {
@@ -91,33 +73,28 @@ export function* loginRequestSaga() {
         JSON.stringify({ user: { token: data.token, ...data.data } })
       );
     } catch (e) {
-      console.error('authentication/auth', e);
+      console.error("authentication/auth", e);
       yield put(loginSuccess());
     }
   }
 }
 
-
 export function* registerRequestSaga() {
   while (true) {
-    const {
-      payload
-    } = yield take(registerRequest);
+    const { payload } = yield take(registerRequest);
 
     try {
       const data = yield apiClient({
-        params: {...payload, "dateOfBirth": "21.04.91"},
-        url: "https://shop-app-brtshk.herokuapp.com/api/authentication/register",
+        params: { ...payload },
+        url:
+          "https://shop-app-brtshk.herokuapp.com/api/authentication/register",
         method: "post"
       });
-      
+
       yield put(registerSuccess());
-      localStorage.setItem(
-        "user",
-        JSON.stringify({ user: { token: data.token, ...data.data } })
-      );
+      console.log(data);
     } catch (e) {
-      console.error('authentication/register', e);
+      console.error("authentication/register", e);
       yield put(registerSuccess());
     }
   }

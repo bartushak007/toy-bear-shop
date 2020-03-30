@@ -1,9 +1,10 @@
 import React from "react";
 import DatePicker from "react-datepicker";
 
+
 import "react-datepicker/dist/react-datepicker.css";
 
-const RegisterForm = ({ onSubmit, onSetField, fields, user }) => (
+const RegisterForm = ({ onSubmit, onSetField, fields, load }) => (
   <div>
     <form onSubmit={onSubmit}>
       {Object.entries(fields).map(([key, { value }]) => (
@@ -11,9 +12,12 @@ const RegisterForm = ({ onSubmit, onSetField, fields, user }) => (
           <label>{key}</label>
           {key === "dateOfBirth" ? (
             <DatePicker
+              dateFormat="dd.MM.yyyy"
               selected={value}
               onChange={value =>
-                onSetField({ target: { name: "dateOfBirth", value } })
+                onSetField({
+                  target: { name: "dateOfBirth", value }
+                })
               }
             />
           ) : (
@@ -23,7 +27,7 @@ const RegisterForm = ({ onSubmit, onSetField, fields, user }) => (
       ))}
 
       <div>
-        <button>{user.load ? "load..." : "Login"}</button>
+        <button>{load ? "load..." : "Register"}</button>
       </div>
     </form>
   </div>

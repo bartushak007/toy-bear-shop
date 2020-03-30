@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
+import moment from "moment";
 
-import { registerRequest, userSelector } from "../../reducers/user";
+import { registerRequest, loadRegisterSelector } from "../../reducers/user";
 
 import RegisterForm from "../../components/forms/register-form";
 
@@ -14,7 +15,8 @@ class Login extends Component {
         secondName: { value: "" },
         login: { value: "" },
         password: { value: "" },
-        dateOfBirth: { value: "" }
+        dateOfBirth: { value: "" },
+        email: { value: "" },
       }
     };
   }
@@ -38,8 +40,14 @@ class Login extends Component {
     const { registerRequest } = this.props;
 
     registerRequest(
-      Object.entries(fields).reduce(        
-        (obj,[key, { value }]) => ({ ...obj, [key]: value }),
+      Object.entries(fields).reduce(
+        (obj, [key, { value }]) => ({
+          ...obj,
+          [key]:
+            key === "dateOfBirth"
+              ? moment(value).format("YYYY_MM_DD")
+              : value
+        }),
         {}
       )
     );
@@ -48,7 +56,7 @@ class Login extends Component {
   };
 
   render() {
-    const { user, history } = this.props;
+    const { load, history } = this.props;
     const { fields } = this.state;
 
     // user.name && history.push("/");
@@ -59,14 +67,14 @@ class Login extends Component {
           fields,
           onSubmit: this.onSubmit,
           onSetField: this.onSetField,
-          user
+          load
         }}
       />
     );
   }
 }
 
-const mapStateToProps = state => ({ user: userSelector(state) });
+const mapStateToProps = state => ({ load: loadRegisterSelector(state) });
 const mapDispatchToProps = {
   registerRequest
 };
