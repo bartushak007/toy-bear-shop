@@ -1,16 +1,15 @@
 import React from "react";
+import { resolvePath } from "../../../helpers";
 import classNames from "classnames";
 import style from "./image.module.scss";
 
-const Image = ({ src, alt, className }) => {
-  const resolvePath = (
-    filePath,
-    prefix = process.env.PUBLIC_URL.concat("/")
-  ) => (filePath.startsWith("http") ? filePath : prefix.concat(filePath));
-
-  return (
-    <img className={classNames(style.image, className)} src={resolvePath(src)} alt={alt} />
-  );
-};
-
+const Image = ({ src, alt, className }) => (
+  <img
+    {...{
+      src: typeof src === "string" ? resolvePath(src) : src,
+      alt,
+      className: classNames(style.image, className)
+    }}
+  />
+);
 export default Image;

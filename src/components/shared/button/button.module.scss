@@ -1,0 +1,15 @@
+@import '../../../assets/css/main.scss';
+ 
+.button {
+  background: transparent;
+  border: 0;
+  outline: 0;
+  color: $grey;
+  font-weight: bold;
+  transition: 0.4s;
+
+  &:hover,
+  &:disabled {
+    opacity: 0.5;
+  }
+}

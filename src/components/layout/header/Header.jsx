@@ -1,15 +1,12 @@
 import React from "react";
-import { withTranslation } from "react-i18next";
 import i18next from "i18next";
 import { Dropdown, DropdownButton } from "react-bootstrap";
-import { Link, withRouter } from "react-router-dom";
-import ComponentWide from "../../shared/component-wide";
+import { Link } from "react-router-dom";
+import ComponentWide from "../../../components/shared/component-wide";
 import style from "./header.module.scss";
-import { logOut, userSelector } from "../../../reducers/user";
-import { connect } from "react-redux";
-import { compose } from "redux";
 
-function Header({ t, user, logOut, history }) {
+
+export default  ({ t, user, logOut, history }) => {
   const { languages } = i18next;
 
   return (
@@ -36,16 +33,22 @@ function Header({ t, user, logOut, history }) {
 
           {user.name ? (
             <DropdownButton title={user.name} variant={"info"}>
-              <Dropdown.Item onClick={logOut}>Log out</Dropdown.Item>
+              
               <Dropdown.Item
                 onClick={() => history && history.push("/user/profile")}
               >
                 Profile
               </Dropdown.Item>
+              <Dropdown.Item
+                onClick={() => history && history.push("/user/lots")}
+              >
+                Lots
+              </Dropdown.Item>
+              <Dropdown.Item onClick={logOut}>Log out</Dropdown.Item>
             </DropdownButton>
           ) : (
             <>
-              <Link to="/authentication/login">Login</Link> /
+              <Link to="/authentication/login">Login</Link>{' '}/{' '}
               <Link to="/authentication/registration">Registration</Link>
             </>
           )}
@@ -55,8 +58,4 @@ function Header({ t, user, logOut, history }) {
   );
 }
 
-export default withRouter(
-  withTranslation()(
-    connect(state => ({ user: userSelector(state) }), { logOut })(Header)
-  )
-);
+

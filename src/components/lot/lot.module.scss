@@ -1,0 +1,141 @@
+@import "../../assets/css/main.scss";
+
+.lot {
+  max-width: 15%;
+  width: 100%;
+  box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.23);
+  margin: 5px;
+  transition: 0.5s;
+  border-radius: 3px;
+  color: $grey;
+  position: relative;
+  height: 300px;
+
+  &__textContainer {
+    padding: 0 10px;
+  }
+
+  &__title {
+    height: 20px;
+    overflow: hidden;
+  }
+
+  &__description {
+    overflow: hidden;
+    height: 0;
+    max-height: 150px;
+  }
+
+  &__container {
+    border-radius: 3px;
+    overflow: hidden;
+    position: absolute;
+    width: 100%;
+    height: fit-content;
+    transition: width height 0.1s;
+  }
+
+  &:hover &__description {
+    overflow: hidden;
+    height: fit-content;
+    background: #fff;
+  }
+  &:hover &__container {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    position: absolute;
+    background: #fff;
+    z-index: 1;
+    width: 105%;
+    min-height: 350px;
+    box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.23);
+  }
+
+  &__image {
+    position: relative;
+  }
+
+  &__buyDescription {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+
+  &__fieldTitle {
+    color: $light-grey;
+  }
+
+  &__price {
+    font-weight: bold;
+    color: $black;
+    font-size: 25px;
+    &:after {
+      content: "₴";
+      font-size: 15px;
+      color: $black;
+    }
+  }
+
+  &__edit {
+    position: absolute;
+    top: -7px;
+    right: -7px;
+    color: $blue !important;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  &__plus {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 100px;
+    border: solid 5px $light-grey;
+    border-radius: 50%;
+    height: 80px;
+    width: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: 0.2s;
+
+    &:after,
+    &:before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      height: 50px;
+      width: 10px;
+      background: $light-grey;
+      border-radius: 2px;
+      transition: 0.2s;
+    }
+
+    &:before {
+      height: 10px;
+      width: 50px;
+    }
+
+    &:hover {
+      width: 90px;
+      height: 90px;
+      cursor: pointer;
+
+      &:after {
+        width: 12px;
+        height: 60px;
+      }
+
+      &:before {
+        height: 12px;
+        width: 60px;
+      }
+    }
+  }
+}

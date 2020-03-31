@@ -1,7 +1,7 @@
 import React from "react";
 
 import { Route, HashRouter, Switch } from "react-router-dom";
-import { Home, Authentication, User } from "./pages";
+import { Home, Authentication, User, UserLots, Lots } from "./pages";
 
 function App() {
   return (
@@ -9,10 +9,12 @@ function App() {
       <HashRouter>
         <Switch>
           <Route exact path="/" component={Home}/>
+          <Route path="/lots" component={Lots}/>   
           <Route path="/authentication/login" component={Authentication}/>
           <Route path="/authentication/registration" component={Authentication}/>
-          <Route path="/user" component={User}/>                 
+          {/* <Route path="/user" component={User}/> */}
           <Route path="/user/profile" component={User}/>                 
+          <Route path="/user/lots" component={UserLots}/>                 
           <Route path="/about">
             <div>456</div>
           </Route>
