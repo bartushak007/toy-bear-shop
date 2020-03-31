@@ -6,19 +6,20 @@ import ComponentWide from "../shared/component-wide";
 
 import style from "./lots-list.module.scss";
 
-const LotsList = ({ lots, children }) => {
+const LotsList = ({ lots, children, edit, ...restProps }) => {
+
   return (
     <ComponentWide>
       <div className={style.lotsList}>
         {children}
         {lots.map(lot => (
-          <Lot key={lot._id} {...lot} />
+          <Lot key={lot._id} {...lot} {...restProps} edit={edit} />
         ))}
       </div>
     </ComponentWide>
   );
 };
 
-LotsList.AddLot = ({ addlot }) => <Lot.Add addlot={addlot} />;
+LotsList.AddLot = ({ hendler }) => <Lot.Add hendler={hendler} />;
 
 export default LotsList;

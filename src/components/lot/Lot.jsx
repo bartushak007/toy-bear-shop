@@ -17,13 +17,13 @@ const Lot = ({
   edit,
   history
 }) => {
-  const editHandler = () => history && history.push(`/edit-lot/${_id}`);
+  const editHandler = () => history && history.push(`/lots-constructor/${_id}`);
 
   return (
     <div className={style.lot}>
       <div className={style.lot__container}>
         <div className={style.lot__image}>
-          <Image src={urlImage} />
+          <Image src={urlImage} style={{ height: "200px" }} />
           {edit && (
             <Button className={style.lot__edit} handler={editHandler}>
               Edit
@@ -51,9 +51,9 @@ const Lot = ({
   );
 };
 
-Lot.Add = () => (
+Lot.Add = ({ hendler }) => (
   <div className={style.lot}>
-    <div className={style.lot__plus} />
+    <div className={style.lot__plus} onClick={hendler} />
   </div>
 );
 

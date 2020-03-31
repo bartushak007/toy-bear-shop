@@ -9,6 +9,7 @@ import SendFrom from "../components/SendForm";
 import ShowBlock from "../components/show-block";
 import Image from "../components/shared/image";
 import Layout from "../components/layout";
+import Lots from "../containers/lots";
 import { DataContext } from "../index";
 
 const Home = ({ t, ...props }) => {
@@ -19,6 +20,9 @@ const Home = ({ t, ...props }) => {
       <div>
         {/* <Slider /> */}
         <Image src={data.images.slider[0]} />
+        <ComponentWide>
+          <Lots />
+        </ComponentWide>
         <ComponentWide backgroundColor="#ccc">
           <SendFrom />
         </ComponentWide>

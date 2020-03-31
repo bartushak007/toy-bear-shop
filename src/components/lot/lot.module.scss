@@ -53,7 +53,7 @@
   }
 
   &__image {
-    position: relative;
+    position: relative;    
   }
 
   &__buyDescription {
@@ -79,8 +79,8 @@
 
   &__edit {
     position: absolute;
-    top: -7px;
-    right: -7px;
+    top: 0px;
+    right: 0px;
     color: $blue !important;
 
     &:hover {

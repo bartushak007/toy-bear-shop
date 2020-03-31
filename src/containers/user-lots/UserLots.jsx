@@ -10,14 +10,21 @@ class Userlots extends Component {
     const { userLotsRequest } = this.props;
     userLotsRequest();
   }
+
+  callLotConstructor = () => {
+    const {history} = this.props;
+    console.log(this.props)
+    history && history.push('/lots-constructor')
+  }
+
   render() {
     const {
-      userLots: { userLots }
+      userLots: { userLots }, ...props
     } = this.props;
     return (
       <div>
-        <LotsList lots={userLots}>
-          <LotsList.AddLot />
+        <LotsList lots={userLots} edit={true} {...props}>
+          <LotsList.AddLot hendler={this.callLotConstructor}/>
         </LotsList>
       </div>
     );
