@@ -1,5 +1,5 @@
 export async function apiClient({ params = {}, url, method = 'get' }) {
-  console.log({ params, url, method });
+  // console.log({ params, url, method });
   const response =
     method.toLowerCase() === "get"
       ? await fetch(url)
@@ -14,3 +14,5 @@ export async function apiClient({ params = {}, url, method = 'get' }) {
   if (!data.success) return new Error();
   return data;
 }
+
+

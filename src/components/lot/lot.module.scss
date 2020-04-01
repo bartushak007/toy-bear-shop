@@ -123,19 +123,8 @@
     }
 
     &:hover {
-      width: 90px;
-      height: 90px;
+      transform: translate(-50%, -50%) scale(0.9);      
       cursor: pointer;
-
-      &:after {
-        width: 12px;
-        height: 60px;
-      }
-
-      &:before {
-        height: 12px;
-        width: 60px;
-      }
     }
   }
 }

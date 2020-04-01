@@ -7,7 +7,7 @@ import rootSaga from "./rootSaga";
 
 
 const setLocalStorageCustomMiddleWare = store => next => action => {
-  console.log(action);
+  // console.log(action);
   next({...action });
   // localStorage.setItem(
   //   "user",

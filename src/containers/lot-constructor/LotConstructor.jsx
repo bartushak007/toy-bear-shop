@@ -2,80 +2,55 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 
-import { createLotRequest, userLotsSelector } from "../../reducers/userLots";
+import {
+  createLotRequest,
+  userLotsSelector,
+  createLotSelector,
+  setCreateLot,
+  setCreateLotValue,
+  resetCreateLot,
+  accumulateFields
+} from "../../reducers/userLots";
 
 import LotConstructorForm from "../../components/forms/lot-constructor-form";
 import Lot from "../../components/lot";
 
-const fields = {
-  productName: { value: "" },
-  description: { value: "" },
-  urlImage: { value: "" },
-  quantity: { value: "" },
-  added: { value: "" },
-  characteristic: { value: "" },
-  asset: { value: "" },
-  price: { value: "" }
-};
-
 class Login extends Component {
   constructor() {
     super();
-    this.state = { fields };
   }
 
-  resetForm = () => this.setState({ fields });
   componentDidMount() {
     const {
       match: { params },
-      userLots
+      setCreateLot
     } = this.props;
+
     if (params.id) {
-      const lot = userLots.userLots.filter(({ _id }) => _id === params.id)[0];
-      lot &&
-        this.setState({
-          fields: Object.entries(lot).reduce(
-            (acc, [key, value]) => ({ ...acc, [key]: { value } }),
-            {}
-          )
-        });
+      setCreateLot(params.id);
     }
   }
 
-  onSetField = ({ target }) => {
-    const { fields } = this.state;
+  componentWillUnmount() {
+    const { resetCreateLot } = this.props;
+    resetCreateLot();
+  }
 
-    this.setState({
-      fields: {
-        ...fields,
-        [target.name]: { ...fields[target.name], value: target.value }
-      }
-    });
+  onSetField = ({ target }) => {
+    const { setCreateLotValue } = this.props;
+    setCreateLotValue({ key: target.name, value: target.value });
   };
 
   onSubmit = e => {
     e.preventDefault();
-
-    e.preventDefault();
-    const { fields } = this.state;
-    const { createLotRequest } = this.props;
-
-    createLotRequest(this.accumulateFields(fields));
+    
+    const {match: { params }, createLotRequest } = this.props;
+    createLotRequest(params.id);
   };
 
-  accumulateFields = fields =>
-    Object.entries(fields).reduce(
-      (obj, [key, { value }]) => ({
-        ...obj,
-        [key]: value
-      }),
-      {}
-    );
-
   render() {
-    const { user, history } = this.props;
-    const { fields } = this.state;
-    console.log("this.props;", this.props.match);
+    const { createLot } = this.props;
+
     return (
       <div
         style={{ display: "flex", justifyContent: "center", margin: "40px 0" }}
@@ -84,19 +59,24 @@ class Login extends Component {
           {...{
             onSubmit: this.onSubmit,
             onSetField: this.onSetField,
-            fields: fields
+            fields: createLot
           }}
         />
-        {console.log(fields)}
-        <Lot {...this.accumulateFields(fields)} />
+        <Lot {...accumulateFields(createLot)} />
       </div>
     );
   }
 }
 
-const mapStateToProps = state => ({ userLots: userLotsSelector(state) });
+const mapStateToProps = state => ({
+  userLots: userLotsSelector(state),
+  createLot: createLotSelector(state)
+});
 const mapDispatchToProps = {
-  createLotRequest
+  createLotRequest,
+  setCreateLot,
+  setCreateLotValue,
+  resetCreateLot
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Login));

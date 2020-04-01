@@ -5,7 +5,6 @@ import Layout from "../components/layout";
 export default props => (
   <Layout>
     <Layout.Header />
-    {console.log(props)}
     <LotConstructor  />
     <Layout.Footer />
   </Layout>

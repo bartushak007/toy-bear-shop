@@ -34,10 +34,10 @@ const Lot = ({
           <div className={style.lot__title}>{productName}</div>
           <div>
             <div className={style.lot__buyDescription}>
-              <div className={style.lot__price}>{price}</div>
+              <div className={style.lot__price}>{price || "0"}</div>
               <div>
                 <span className={style.lot__fieldTitle}>quantity:</span>{" "}
-                {quantity}
+                {quantity || "0"}
               </div>
             </div>
             <div className={style.lot__description}>
