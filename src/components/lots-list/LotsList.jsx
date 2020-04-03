@@ -1,22 +1,22 @@
 import React from "react";
 
-import Image from "../shared/image";
 import Lot from "../lot";
-import ComponentWide from "../shared/component-wide";
+import { ComponentWide, Loader } from "../shared";
 
 import style from "./lots-list.module.scss";
 
-const LotsList = ({ lots, children, edit, ...restProps }) => {
-
+const LotsList = ({ pageLoad, lots, children, edit, ...restProps }) => {
   return (
-    <ComponentWide>
-      <div className={style.lotsList}>
-        {children}
-        {lots.map(lot => (
-          <Lot key={lot._id} {...lot} {...restProps} edit={edit} />
-        ))}
-      </div>
-    </ComponentWide>
+    <Loader.Wrapper pageLoad={pageLoad}>
+      <ComponentWide>
+        <div className={style.lotsList}>
+          {children}
+          {lots.map(lot => (
+            <Lot key={lot._id} {...lot} {...restProps} edit={edit} />
+          ))}
+        </div>
+      </ComponentWide>
+    </Loader.Wrapper>
   );
 };
 

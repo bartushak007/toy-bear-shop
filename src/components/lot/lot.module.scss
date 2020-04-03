@@ -1,7 +1,7 @@
 @import "../../assets/css/main.scss";
 
 .lot {
-  max-width: 15%;
+  max-width: 220px;
   width: 100%;
   box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.23);
   margin: 5px;
@@ -78,10 +78,12 @@
   }
 
   &__edit {
-    position: absolute;
-    top: 0px;
-    right: 0px;
-    color: $blue !important;
+    position: absolute !important;
+    top: 2px;
+    right: 2px;
+    color: $blue;
+    background: $white;
+    border-bottom-left-radius: 3px;
 
     &:hover {
       text-decoration: underline;

@@ -1,8 +1,29 @@
-@import './normalize';
-@import './variables';
-@import './fonts';
-@import './basic/basic';
+@import "./normalize";
+@import "./variables";
+@import "./fonts";
+@import "./basic/basic";
 
 body {
   // background: $light-grey !important;
+}
+
+input,
+textarea {
+  width: 100%;
+  border: 0;
+  background: #e6e7ee;
+  border-radius: 3px;
+  font-weight: 500;
+  line-height: 24px;
+  font-size: 17px;
+  letter-spacing: 0.75px;
+  padding: 10px 5px;
+  color: #43444c;
+}
+textarea {
+  min-height: 100px;
+}
+.error {
+  color: rgb(238, 76, 76);
+  font-size: 9px;
 }

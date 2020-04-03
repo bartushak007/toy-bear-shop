@@ -13,12 +13,12 @@ class LotsPlace extends Component {
 
   render() {
     const {
-      lots: { lots }
+      lots: { lots, load }
     } = this.props;
-    console.log(this.props)
+    console.log(this.props);
     return (
       <div>
-        <LotsList lots={lots}/>
+        <LotsList lots={lots} pageLoad={load} />
       </div>
     );
   }

@@ -1,16 +1,47 @@
-@import'../../../assets/css/main.scss';
+@import "../../../assets/css/main.scss";
 
 .header {
   display: flex;
-  justify-content: space-between;
+  // justify-content: space-between;
+  align-items: center;
   color: $white;
-  padding: 2rem 0;
+  padding: 0.5rem 0;
+  background-color: #122538;
 
   &__logo {
+    font-size: 15px;
+    padding: 0;
+    margin: 0;
+    margin-right: 1rem;
     color: $white;
     &:hover {
       color: $white;
       text-decoration: none;
     }
   }
+
+  &__search {
+    width: 100%;
+    max-width: 700px;
+    display: flex;
+    align-items: center;
+    input {
+      background: $white;
+      padding: 5px;
+    }
+  }
+  &__searchIcon {
+    // background: red;
+    color: red;
+    margin: 0 5px;
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}
+
+.header_top {
+  padding: 0;
+  display: flex;
+  justify-content: flex-end;
 }

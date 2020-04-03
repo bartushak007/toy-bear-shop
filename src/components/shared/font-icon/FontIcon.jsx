@@ -1,6 +1,7 @@
 import React from "react";
 import {} from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import classNames from "classnames";
 import style from "./font-icon.module.scss";
 import {
@@ -11,17 +12,40 @@ import {
 const icons = {
   telegram: faTelegramPlane,
   instagram: faInstagram,
-  facebook: faFacebook
+  facebook: faFacebook,
+  search: faSearch
 };
-const FontIcon = ({ iconKey, link, className }) => {
+
+const FontIcon = ({
+  iconKey,
+  link,
+  className,
+  iconClassName,
+  blank,
+  click = () => {}
+}) => {
+  const icon = (
+    <FontAwesomeIcon
+      className={iconClassName || ""}
+      icon={icons[iconKey]}
+      onClick={click}
+    />
+  );
+  
   return (
-    <a
-      className={classNames(style.fontIcon, className)}
-      href={link || "#"}
-      target={link ? "_blank" : "_self"}
-    >
-      <FontAwesomeIcon icon={icons[iconKey]} />
-    </a>
+    <>
+      {link ? (
+        <a
+          className={classNames(style.fontIcon, className)}
+          href={link || "#"}
+          target={link && blank ? "_blank" : "_self"}
+        >
+          {icon}
+        </a>
+      ) : (
+        icon
+      )}
+    </>
   );
 };
 

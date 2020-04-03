@@ -1,0 +1,27 @@
+@import '../../assets/css/main.scss';
+
+.languages {
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  color: $white;
+
+  &__divider {
+    text-transform: lowercase;
+    margin: 2px;
+  }
+  &__lang {
+    text-transform: uppercase;
+    vertical-align: baseline;
+    font-size: 14px;
+    &_first,
+    &:hover {
+      opacity: 0.5;
+      cursor: pointer;
+    }
+
+    &_first:hover {
+      cursor: default;
+    }
+  }
+}

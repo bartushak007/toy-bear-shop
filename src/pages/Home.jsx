@@ -19,7 +19,7 @@ const Home = ({ t, ...props }) => {
       <Layout.Header />
       <div>
         {/* <Slider /> */}
-        <Image src={data.images.slider[0]} />
+        {/* <Image src={data.images.slider[0]} /> */}
         <ComponentWide>
           <Lots />
         </ComponentWide>

@@ -1,25 +1,46 @@
 import React from "react";
-import Image from "../../shared/image";
+import classNames from "classnames";
+import {Image, Button} from "../../shared";
 
-const LotConstructorForm = ({ onSubmit, onSetField, fields, load }) => {
+
+import style from "./lotconstrucorform.module.scss";
+
+const LotConstructorForm = ({ onSubmit, onSetField, fields, submitLoad, pageLoad }) => {
+
   return (
-    <form style={{ marginRight: "40px" }} onSubmit={onSubmit}>
-      {Object.entries(fields).map(([key, { value, error }]) => (
+    <form className={style.constructorForm} onSubmit={onSubmit}>      
+      {Object.entries(fields).map(([key, { value, error, fieldType }]) => (
         <div key={key}>
-          
           <label style={{ width: "150px" }}>{key}</label>
-          <input name={key} type="text" value={value} onChange={onSetField} />
-          {error && <div style={{ color: "red", fontSize: "9px", textAlign: "right" }}>{error}</div>}
+          <div>
+            {fieldType === "textarea" && (
+              <textarea
+                name={key}
+                type="text"
+                value={value}
+                onChange={onSetField}
+              />
+            )}
+            {(!fieldType || fieldType === "label") && (
+              <input
+                name={key}
+                type="text"
+                value={value}
+                onChange={onSetField}
+              />
+            )}
+          </div>
+          {error && <div className="error">{error}</div>}
           {key === "urlImage" && (
-            <div>
-              <Image style={{ width: "200px" }} src={value} />
+            <div className={style.constructorForm__img}>
+              <Image src={value} />
             </div>
           )}
         </div>
       ))}
 
-      <div>
-        <button>{load ? "load..." : "Register"}</button>
+      <div className={classNames(style.constructorForm__save, { load: submitLoad })}>
+        <Button submit load={submitLoad}>SAVE</Button>
       </div>
     </form>
   );

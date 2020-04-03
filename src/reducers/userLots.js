@@ -17,6 +17,7 @@ const CREATE_LOT_SUCCESS = "USER_LOTS/CREATE_LOT_SUCCESS";
 const FILL_IN_CREATE_LOT = "USER_LOTS/FILL_IN_CREATE_LOT";
 
 export const userLotsRequest = createAction(USER_LOTS_REQUEST);
+export const oneUserLotRequest = createAction("oneUserLotRequest");
 export const userLotsSuccess = createAction(USER_LOTS_SUCCSESS);
 export const setUserLots = createAction(SET_USER_LOTS);
 export const createLotRequest = createAction(CREATE_LOT_REQUEST);
@@ -32,22 +33,66 @@ const createLotInitial = {
     value: "",
     isValid: true,
     error: "",
-    validationRules: { type: "text", minLength: 5, isRequired: true },
+    validationRules: { minLength: 5, isRequired: true },
     fieldType: "label"
   },
-  description: { value: "" },
-  urlImage: { value: "" },
-  quantity: { value: "" },
-  added: { value: "" },
-  characteristic: { value: "" },
-  asset: { value: "" },
-  price: { value: "" }
+  description: {
+    value: "",
+    isValid: true,
+    error: "",
+    validationRules: { minLength: 10, maxLength: 200, isRequired: true },
+    fieldType: "textarea"
+  },
+  urlImage: {
+    value: "",
+    isValid: true,
+    error: "",
+    validationRules: { isRequired: false },
+    fieldType: "label"
+  },
+  quantity: {
+    value: "",
+    isValid: true,
+    error: "",
+    validationRules: { type: "number", isRequired: true },
+    fieldType: "label"
+  },
+  added: {
+    value: "",
+    isValid: true,
+    error: "",
+    validationRules: { isRequired: true },
+    fieldType: "label",
+    readOnly: true
+  },
+  characteristic: {
+    value: "",
+    isValid: true,
+    error: "",
+    validationRules: { minLength: 10, maxLength: 500, isRequired: true },
+    fieldType: "label"
+  },
+  asset: {
+    value: "",
+    isValid: true,
+    error: "",
+    validationRules: { isRequired: true },
+    fieldType: "label"
+  },
+  price: {
+    value: "",
+    isValid: true,
+    error: "",
+    validationRules: { type: "number", isRequired: true },
+    fieldType: "label"
+  }
 };
 
 const initialState = {
   load: false,
   userLots: [],
-  createLot: createLotInitial
+  createLot: createLotInitial,
+  createlotLoading: false
 };
 
 const setCreateLotValueAction = (state, { payload }) => {
@@ -69,19 +114,23 @@ const setCreateLotValueAction = (state, { payload }) => {
 
 export default handleActions(
   {
-    [userLotsRequest]: state => {
+    [userLotsRequest]: state => {  
+      return { ...state, load: true };
+    },
+    [oneUserLotRequest]: state => {  
       return { ...state, load: true };
     },
     [userLotsSuccess]: state => {
+    
       return { ...state, load: false };
     },
     [setUserLots]: (state, { payload }) => ({ ...state, userLots: payload }),
     [reset]: () => initialState,
     [createLotRequest]: state => {
-      return { ...state, load: true };
+      return { ...state, createlotLoading: true };
     },
     [createLotSuccess]: state => {
-      return { ...state, load: false };
+      return { ...state, createlotLoading: false };
     },
     [setCreateLot]: state => ({ ...state }),
     [fillInCreateLot]: (state, { payload }) => ({
@@ -96,8 +145,11 @@ export default handleActions(
 
 export const userLotsSelector = state => state[REDUCER_NAME];
 export const createLotSelector = state => state[REDUCER_NAME].createLot;
+export const createlotLoadingSelector = state =>
+  state[REDUCER_NAME].createlotLoading;
 
-function* getUsersSaga() {
+function* getLotsOfUserSaga() {
+  yield put(oneUserLotRequest());
   const user = yield select(userSelector);
 
   try {
@@ -114,10 +166,11 @@ function* getUsersSaga() {
     yield put(userLotsSuccess());
   }
 }
+
 export function* userLotsRequestSaga() {
   while (true) {
     yield take(userLotsRequest);
-    yield call(getUsersSaga);
+    yield call(getLotsOfUserSaga);
   }
 }
 
@@ -188,6 +241,19 @@ function validateFormField({ validationRules, value }) {
         error: `The field must be at least ${validationRules.minLength} characters long.`
       };
     }
+    if (validationRules.maxLength && value.length > validationRules.maxLength) {
+      return {
+        isValid: false,
+        error: `The field must be bigger then ${validationRules.maxLength} characters long.`
+      };
+    }
+
+    if (validationRules.type === "number" && !parseInt(value)) {
+      return {
+        isValid: false,
+        error: `The field must contains only numbers.`
+      };
+    }
   }
   return { isValid: true, error: "" };
 }
@@ -199,7 +265,7 @@ export function* setCreateLotSaga() {
     let lots = yield select(userLotsSelector);
 
     if (!lots.length) {
-      yield call(getUsersSaga);
+      yield call(getLotsOfUserSaga);
       lots = yield select(userLotsSelector);
     }
     const lot = lots.userLots.filter(({ _id }) => _id === payload)[0];

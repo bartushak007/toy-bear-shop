@@ -9,11 +9,11 @@ import {
   setCreateLot,
   setCreateLotValue,
   resetCreateLot,
-  accumulateFields
+  accumulateFields,
+  createlotLoadingSelector
 } from "../../reducers/userLots";
 
-import LotConstructorForm from "../../components/forms/lot-constructor-form";
-import Lot from "../../components/lot";
+import LotConstructorView from "../../components/lot-constructor-view";
 
 class Login extends Component {
   constructor() {
@@ -43,27 +43,28 @@ class Login extends Component {
 
   onSubmit = e => {
     e.preventDefault();
-    
-    const {match: { params }, createLotRequest } = this.props;
+
+    const {
+      match: { params },
+      createLotRequest
+    } = this.props;
     createLotRequest(params.id);
   };
 
   render() {
-    const { createLot } = this.props;
+    const { createLot, userLots } = this.props;
 
     return (
-      <div
-        style={{ display: "flex", justifyContent: "center", margin: "40px 0" }}
-      >
-        <LotConstructorForm
-          {...{
-            onSubmit: this.onSubmit,
-            onSetField: this.onSetField,
-            fields: createLot
-          }}
-        />
-        <Lot {...accumulateFields(createLot)} />
-      </div>
+      <LotConstructorView
+        {...{
+          pageLoad: userLots.load,
+          submitLoad: userLots.createlotLoading,
+          onSubmit: this.onSubmit,
+          onSetField: this.onSetField,
+          fields: createLot,
+          lotFields: { ...accumulateFields(createLot) }
+        }}
+      />
     );
   }
 }

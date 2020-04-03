@@ -7,6 +7,7 @@ import * as serviceWorker from "./serviceWorker";
 import "bootstrap/dist/css/bootstrap.min.css";
 import data from "./data.json";
 import store from "./store";
+import './assets/css/main.scss'
 
 export const DataContext = React.createContext({});
 
