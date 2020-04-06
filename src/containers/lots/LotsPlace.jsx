@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { lotsRequest, lotsSelector } from "../../reducers/lotsList";
 
-import ComponentWide from "../../components/shared/component-wide";
 import LotsList from "../../components/lots-list";
 
 class LotsPlace extends Component {
@@ -15,7 +14,7 @@ class LotsPlace extends Component {
     const {
       lots: { lots, load }
     } = this.props;
-    console.log(this.props);
+
     return (
       <div>
         <LotsList lots={lots} pageLoad={load} />

@@ -18,6 +18,7 @@ class Userlots extends Component {
     const {
       userLots: { userLots, load }, ...props
     } = this.props;
+
     return (
       <div>
         <LotsList lots={userLots} pageLoad={load} edit={true} {...props}>

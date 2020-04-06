@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import { loginRequest, userSelector } from "../../reducers/user";
+import { loginRequest, fildsSelector, userSelector } from "../../reducers/user";
 
 import LoginForm from "../../components/forms/login-form";
 
@@ -26,10 +26,10 @@ class Login extends Component {
   };
 
   render() {
-    const { user, history } = this.props;
+    const { userFields, user, history } = this.props;
     const { login, password } = this.state;
 
-    user.name && history.push("/");
+    userFields.name && history.push("/");
 
     return (
       <LoginForm
@@ -45,7 +45,10 @@ class Login extends Component {
   }
 }
 
-const mapStateToProps = state => ({ user: userSelector(state) });
+const mapStateToProps = state => ({
+  userFields: fildsSelector(state),
+  user: userSelector(state)
+});
 const mapDispatchToProps = {
   loginRequest
 };

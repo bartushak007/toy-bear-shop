@@ -1,7 +1,7 @@
 import React from "react";
 import style from "./lotconstructorview.module.scss";
 import { ComponentWide, Loader } from "../shared";
-import LotConstructorForm from "../forms/lot-constructor-form";
+import LotConstructorForm from "../forms/basic-form";
 import Lot from "../lot";
 
 const LotConstructorView = ({

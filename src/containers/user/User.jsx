@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import { userSelector } from "../../reducers/user";
+import { fildsSelector } from "../../reducers/user";
 
 class User extends Component {
   constructor() {
@@ -10,7 +10,7 @@ class User extends Component {
   }
 
   render() {
-    const { user, history } = this.props;
+    const { user } = this.props;
 
     return (
       <div>
@@ -24,7 +24,7 @@ class User extends Component {
   }
 }
 
-const mapStateToProps = state => ({ user: userSelector(state) });
+const mapStateToProps = state => ({ user: fildsSelector(state) });
 const mapDispatchToProps = {};
 
 export default connect(mapStateToProps, mapDispatchToProps)(User);

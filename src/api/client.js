@@ -1,5 +1,5 @@
 export async function apiClient({ params = {}, url, method = 'get' }) {
-  // console.log({ params, url, method });
+
   const response =
     method.toLowerCase() === "get"
       ? await fetch(url)

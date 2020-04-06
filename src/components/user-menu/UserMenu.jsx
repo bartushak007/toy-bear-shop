@@ -1,10 +1,8 @@
 import React from "react";
-import i18next from "i18next";
-import { Dropdown, DropdownButton } from "react-bootstrap";
+
 import { Link } from "react-router-dom";
 import { capitalizeFirst } from "../../helpers";
 
-import classNames from "classnames";
 import style from "./usermenu.module.scss";
 
 const UserMenu = ({ user, history, logOut }) => (
@@ -16,18 +14,27 @@ const UserMenu = ({ user, history, logOut }) => (
           {capitalizeFirst(user.secondName)}
         </span>
         <div className={style.userMenu__drop}>
-            <div className={style.userMenu__dropItem} onClick={() => history && history.push("/user/profile")}>
-              Profile
-            </div>
-            <div className={style.userMenu__dropItem} onClick={() => history && history.push("/user/lots")}>
-              Lots
-            </div>
-            <div className={style.userMenu__dropItem} onClick={logOut}>Log out</div>
+          <div
+            className={style.userMenu__dropItem}
+            onClick={() => history && history.push("/user/profile")}
+          >
+            Profile
           </div>
+          <div
+            className={style.userMenu__dropItem}
+            onClick={() => history && history.push("/user/lots")}
+          >
+            Lots
+          </div>
+          <div className={style.userMenu__dropItem} onClick={logOut}>
+            Log out
+          </div>
+        </div>
       </div>
     ) : (
       <>
-        <Link to="/authentication/login">Login</Link> /{" "}
+        <Link to="/authentication/login">Login</Link>
+        <span className={style.userMenu__divider}>{"|"}</span>
         <Link to="/authentication/registration">Registration</Link>
       </>
     )}
@@ -35,13 +42,3 @@ const UserMenu = ({ user, history, logOut }) => (
 );
 
 export default UserMenu;
-
-// <DropdownButton title={user.name} variant={"info"}>
-//         <Dropdown.Item onClick={() => history && history.push("/user/profile")}>
-//           Profile
-//         </Dropdown.Item>
-//         <Dropdown.Item onClick={() => history && history.push("/user/lots")}>
-//           Lots
-//         </Dropdown.Item>
-//         <Dropdown.Item onClick={logOut}>Log out</Dropdown.Item>
-//       </DropdownButton>

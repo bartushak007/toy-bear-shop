@@ -1,8 +1,8 @@
 import { handleActions, createAction } from "redux-actions";
-import { all, call, put, take, fork, select } from "redux-saga/effects";
-import { createSelector } from "reselect";
+import { all, put, take } from "redux-saga/effects";
+
 import { apiClient } from "../api/client";
-import { userSelector } from "./user";
+
 const REDUCER_NAME = "lots";
 
 const LOTS_REQUEST = "LOTS/LOTS_REQUEST";
@@ -45,7 +45,7 @@ export function* lotsRequestSaga() {
       const data = yield apiClient({
         url: `https://shop-app-brtshk.herokuapp.com/api/products`
       });
-      console.log(data);
+
       yield put(setlots(data.data));
       yield put(lotsSuccess());
     } catch (e) {

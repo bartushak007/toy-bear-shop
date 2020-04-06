@@ -1,4 +1,4 @@
-import React, { createContext } from "react";
+import React from "react";
 import { Provider } from "react-redux";
 import ReactDOM from "react-dom";
 import App from "./App";
@@ -7,7 +7,7 @@ import * as serviceWorker from "./serviceWorker";
 import "bootstrap/dist/css/bootstrap.min.css";
 import data from "./data.json";
 import store from "./store";
-import './assets/css/main.scss'
+import "./assets/css/main.scss";
 
 export const DataContext = React.createContext({});
 

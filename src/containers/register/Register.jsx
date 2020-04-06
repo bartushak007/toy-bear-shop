@@ -1,68 +1,52 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import moment from "moment";
 
-import { registerRequest, loadRegisterSelector } from "../../reducers/user";
+import {
+  registerRequest,
+  loadRegisterSelector,
+  formFieldsSelector,
+  setFormValue
+} from "../../reducers/user";
 
-import RegisterForm from "../../components/forms/register-form";
+import BasicForm from "../../components/forms/basic-form";
 
-class Login extends Component {
-  constructor() {
-    super();
-    this.state = {
-      fields: {
-        name: { value: "" },
-        secondName: { value: "" },
-        login: { value: "" },
-        password: { value: "" },
-        dateOfBirth: { value: "" },
-        email: { value: "" },
-      }
-    };
-  }
+class Register extends Component {
+  // componentDidMount() {
+  //   const {
+  //     match: { params },
+  //     setCreateLot
+  //   } = this.props;
 
-  resetForm = () => this.setState({ login: "", password: "" });
+  //   if (params.id) {
+  //     setCreateLot(params.id);
+  //   }
+  // }
+
+  // componentWillUnmount() {
+  //   const { resetCreateLot } = this.props;
+  //   resetCreateLot();
+  // }
 
   onSetField = ({ target }) => {
-    const { fields } = this.state;
-
-    this.setState({
-      fields: {
-        ...fields,
-        [target.name]: { ...fields[target.name], value: target.value }
-      }
-    });
+    const { setFormValue } = this.props;
+    setFormValue({ key: target.name, value: target.value });
   };
 
   onSubmit = e => {
     e.preventDefault();
-    const { fields } = this.state;
-    const { registerRequest } = this.props;
-
-    registerRequest(
-      Object.entries(fields).reduce(
-        (obj, [key, { value }]) => ({
-          ...obj,
-          [key]:
-            key === "dateOfBirth"
-              ? moment(value).format("YYYY_MM_DD")
-              : value
-        }),
-        {}
-      )
-    );
-
-    // this.resetForm();
+    // e.persist();
+    const {
+      // match: { params },
+      registerRequest
+    } = this.props;
+    registerRequest();
   };
 
   render() {
-    const { load, history } = this.props;
-    const { fields } = this.state;
-
-    // user.name && history.push("/");
+    const { load, fields } = this.props;
 
     return (
-      <RegisterForm
+      <BasicForm
         {...{
           fields,
           onSubmit: this.onSubmit,
@@ -74,9 +58,13 @@ class Login extends Component {
   }
 }
 
-const mapStateToProps = state => ({ load: loadRegisterSelector(state) });
+const mapStateToProps = state => ({
+  load: loadRegisterSelector(state),
+  fields: formFieldsSelector(state)
+});
 const mapDispatchToProps = {
-  registerRequest
+  registerRequest,
+  setFormValue
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default connect(mapStateToProps, mapDispatchToProps)(Register);

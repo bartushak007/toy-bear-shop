@@ -3,16 +3,18 @@ import { withTranslation } from "react-i18next";
 
 import { withRouter } from "react-router-dom";
 
-import { logOut, userSelector } from "../../reducers/user";
+import { logOut, fildsSelector } from "../../reducers/user";
 import { connect } from "react-redux";
 import HeaderView from "../../components/layout/header";
 
 function Header(props) {
+
   return <HeaderView {...props} />;
 }
+const mapStateToProps = state => ({ user: fildsSelector(state) });
 
 export default withRouter(
   withTranslation()(
-    connect(state => ({ user: userSelector(state) }), { logOut })(Header)
+    connect(mapStateToProps, { logOut })(Header)
   )
 );

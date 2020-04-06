@@ -6,19 +6,17 @@ import {
   createLotRequest,
   userLotsSelector,
   createLotSelector,
+  createLotAccumulatedSelector,
   setCreateLot,
   setCreateLotValue,
   resetCreateLot,
-  accumulateFields,
-  createlotLoadingSelector
+
 } from "../../reducers/userLots";
 
 import LotConstructorView from "../../components/lot-constructor-view";
 
 class Login extends Component {
-  constructor() {
-    super();
-  }
+
 
   componentDidMount() {
     const {
@@ -43,7 +41,7 @@ class Login extends Component {
 
   onSubmit = e => {
     e.preventDefault();
-
+    // e.persist();
     const {
       match: { params },
       createLotRequest
@@ -52,7 +50,7 @@ class Login extends Component {
   };
 
   render() {
-    const { createLot, userLots } = this.props;
+    const { createLot, userLots, lotFields } = this.props;
 
     return (
       <LotConstructorView
@@ -62,7 +60,7 @@ class Login extends Component {
           onSubmit: this.onSubmit,
           onSetField: this.onSetField,
           fields: createLot,
-          lotFields: { ...accumulateFields(createLot) }
+          lotFields
         }}
       />
     );
@@ -71,7 +69,8 @@ class Login extends Component {
 
 const mapStateToProps = state => ({
   userLots: userLotsSelector(state),
-  createLot: createLotSelector(state)
+  createLot: createLotSelector(state),
+  lotFields: createLotAccumulatedSelector(state)
 });
 const mapDispatchToProps = {
   createLotRequest,

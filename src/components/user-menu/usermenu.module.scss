@@ -1,21 +1,22 @@
-@import '../../assets/css/main.scss';
+@import "../../assets/css/main.scss";
 
 .userMenu {
   margin: 0 1rem;
   color: $white;
   position: relative;
+  font-size: 14px;
 
   &__drop {
     min-width: 100%;
     background: $white;
-    padding: 5px 10px ;
+    padding: 5px 10px;
     z-index: 2;
     position: absolute;
     right: 0;
     display: none;
     flex-direction: column;
-    align-items: flex-end;  
-    color: $grey; 
+    align-items: flex-end;
+    color: $grey;
   }
   &__dropItem {
     &:hover {
@@ -24,9 +25,13 @@
     }
   }
 
-  &:hover &__drop { 
+  &:hover &__drop {
     display: flex;
   }
 
-  
+  &__divider {
+    text-transform: lowercase;
+    margin: 2px;
+    font-size: 10px;
+  }
 }

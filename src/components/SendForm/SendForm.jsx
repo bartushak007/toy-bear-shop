@@ -1,5 +1,5 @@
 import React, { useReducer } from "react";
-import { Button } from "react-bootstrap";
+
 import classNames from "classnames";
 import emailjs from "emailjs-com";
 import style from "./send-form.module.scss";
@@ -20,7 +20,7 @@ function reducer(state, action) {
         ...state,
         email: {
           value: action.payload,
-          error: !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(
+          error: !/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/.test(
             action.payload
           )
         }

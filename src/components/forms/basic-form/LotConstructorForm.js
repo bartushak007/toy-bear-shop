@@ -5,7 +5,7 @@ import {Image, Button} from "../../shared";
 
 import style from "./lotconstrucorform.module.scss";
 
-const LotConstructorForm = ({ onSubmit, onSetField, fields, submitLoad, pageLoad }) => {
+const LotConstructorForm = ({ onSubmit, onSetField, fields, submitLoad }) => {
 
   return (
     <form className={style.constructorForm} onSubmit={onSubmit}>      

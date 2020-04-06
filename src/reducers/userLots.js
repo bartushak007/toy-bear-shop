@@ -1,8 +1,9 @@
 import { handleActions, createAction } from "redux-actions";
-import { all, call, put, take, fork, select } from "redux-saga/effects";
-import { createSelector } from "reselect";
+import { all, call, put, take, select } from "redux-saga/effects";
+
 import { apiClient } from "../api/client";
-import { userSelector } from "./user";
+import { userSelector, fildsSelector } from "./user";
+import { formHelper } from "../helpers";
 
 const REDUCER_NAME = "userLots";
 const USER_LOTS_REQUEST = "USER_LOTS/USER_LOTS_REQUEST";
@@ -95,33 +96,17 @@ const initialState = {
   createlotLoading: false
 };
 
-const setCreateLotValueAction = (state, { payload }) => {
-  return {
-    ...state,
-    createLot: {
-      ...state.createLot,
-      [payload.key]: {
-        ...state.createLot[payload.key],
-        value: payload.value,
-        ...validateFormField({
-          validationRules: state.createLot[payload.key].validationRules,
-          value: payload.value
-        })
-      }
-    }
-  };
-};
+const setCreateLotValueAction = formHelper.setCreateLotValueAction("createLot");
 
 export default handleActions(
   {
-    [userLotsRequest]: state => {  
+    [userLotsRequest]: state => {
       return { ...state, load: true };
     },
-    [oneUserLotRequest]: state => {  
+    [oneUserLotRequest]: state => {
       return { ...state, load: true };
     },
     [userLotsSuccess]: state => {
-    
       return { ...state, load: false };
     },
     [setUserLots]: (state, { payload }) => ({ ...state, userLots: payload }),
@@ -145,20 +130,22 @@ export default handleActions(
 
 export const userLotsSelector = state => state[REDUCER_NAME];
 export const createLotSelector = state => state[REDUCER_NAME].createLot;
+export const createLotAccumulatedSelector = state =>
+  formHelper.accumulateFields(state[REDUCER_NAME].createLot);
 export const createlotLoadingSelector = state =>
   state[REDUCER_NAME].createlotLoading;
 
 function* getLotsOfUserSaga() {
   yield put(oneUserLotRequest());
   const user = yield select(userSelector);
-
+  const fields = yield select(fildsSelector);
   try {
     const data = yield apiClient({
       params: { token: user.token },
-      url: `https://shop-app-brtshk.herokuapp.com/api/products/userid/${user.id}?token=${user.token}`,
+      url: `https://shop-app-brtshk.herokuapp.com/api/products/userid/${fields.id}?token=${user.token}`,
       method: "get"
     });
-    console.log(data);
+
     yield put(setUserLots(data.data));
     yield put(userLotsSuccess());
   } catch (e) {
@@ -174,88 +161,62 @@ export function* userLotsRequestSaga() {
   }
 }
 
-export function accumulateFields(fields) {
-  return Object.entries(fields).reduce(
-    (obj, [key, { value }]) => ({
-      ...obj,
-      [key]: value
-    }),
-    {}
-  );
-}
-
 export function* crateLotRequestSaga() {
   while (true) {
     const { payload: id } = yield take(createLotRequest);
     const user = yield select(userSelector);
+    const fields = yield select(fildsSelector);
     const lots = yield select(userLotsSelector);
     const createLot = yield select(createLotSelector);
-    try {
-      const data = yield apiClient({
-        params: {
-          ...accumulateFields(createLot),
-          user_id: user.id,
-          token: user.token
-        },
-        url: id
-          ? `https://shop-app-brtshk.herokuapp.com/api/products/${id}`
-          : "https://shop-app-brtshk.herokuapp.com/api/products",
-        method: id ? "put" : "post"
-      });
 
-      if (data) {
-        if (!id) {
-          yield put(setUserLots([...lots.userLots, { ...data.data }]));
+    const createLotArray = Object.entries(createLot);
+
+    for (let i = 0; i < createLotArray.length; i++) {
+      const [key, { value }] = createLotArray[i];
+
+      yield put(setCreateLotValue({ key, value }));
+    }
+    const createLotUpdated = yield select(createLotSelector);
+
+    if (!Object.values(createLotUpdated).some(({ error }) => error)) {
+      try {
+        const data = yield apiClient({
+          params: {
+            ...formHelper.accumulateFields(createLot),
+            user_id: fields.id,
+            token: user.token
+          },
+          url: id
+            ? `https://shop-app-brtshk.herokuapp.com/api/products/${id}`
+            : "https://shop-app-brtshk.herokuapp.com/api/products",
+          method: id ? "put" : "post"
+        });
+
+        if (data) {
+          if (!id) {
+            yield put(setUserLots([...lots.userLots, { ...data.data }]));
+          }
+          // if (id) {
+
+          //   yield put(
+          //     setUserLots([
+          //       ...lots.userLots.map(({ _id, ...rest }) =>
+          //         id === _id ? { ...data.data } : { _id, ...rest }
+          //       )
+          //     ])
+          //   );
+          // }
         }
-        // if (id) {
-
-        //   yield put(
-        //     setUserLots([
-        //       ...lots.userLots.map(({ _id, ...rest }) =>
-        //         id === _id ? { ...data.data } : { _id, ...rest }
-        //       )
-        //     ])
-        //   );
-        // }
+        yield put(createLotSuccess());
+        yield put(resetCreateLot());
+      } catch (e) {
+        console.error("create lot", e);
+        yield put(createLotSuccess());
       }
-      yield put(createLotSuccess());
-      yield put(resetCreateLot());
-    } catch (e) {
-      console.error("create lot", e);
+    } else {
       yield put(createLotSuccess());
     }
   }
-}
-
-function validateFormField({ validationRules, value }) {
-  if (validationRules) {
-    if (validationRules.isRequired && !value.length) {
-      return {
-        isValid: false,
-        error: `The field is required.`
-      };
-    }
-    if (validationRules.minLength && value.length < validationRules.minLength) {
-      return {
-        isValid: false,
-        error: `The field must be at least ${validationRules.minLength} characters long.`
-      };
-    }
-    if (validationRules.maxLength && value.length > validationRules.maxLength) {
-      return {
-        isValid: false,
-        error: `The field must be bigger then ${validationRules.maxLength} characters long.`
-      };
-    }
-
-    if (validationRules.type === "number" && !parseInt(value)) {
-      return {
-        isValid: false,
-        error: `The field must contains only numbers.`
-      };
-    }
-  }
-  return { isValid: true, error: "" };
 }
 
 export function* setCreateLotSaga() {
@@ -264,7 +225,7 @@ export function* setCreateLotSaga() {
     const createLot = yield select(createLotSelector);
     let lots = yield select(userLotsSelector);
 
-    if (!lots.length) {
+    if (!lots.userLots.length) {
       yield call(getLotsOfUserSaga);
       lots = yield select(userLotsSelector);
     }

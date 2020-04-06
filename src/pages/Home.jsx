@@ -1,18 +1,18 @@
 import React, { useContext } from "react";
-import { compose } from "redux";
+
 import { connect } from "react-redux";
 import { withTranslation } from "react-i18next";
 import {} from "react-bootstrap";
 import ComponentWide from "../components/shared/component-wide";
-import Slider from "../components/slider";
+// import Slider from "../components/slider";
 import SendFrom from "../components/SendForm";
 import ShowBlock from "../components/show-block";
-import Image from "../components/shared/image";
+// import Image from "../components/shared/image";
 import Layout from "../components/layout";
 import Lots from "../containers/lots";
 import { DataContext } from "../index";
 
-const Home = ({ t, ...props }) => {
+const Home = ({ t }) => {
   const data = useContext(DataContext);
   return (
     <Layout>

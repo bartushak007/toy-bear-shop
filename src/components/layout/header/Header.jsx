@@ -1,9 +1,8 @@
 import React from "react";
 import i18next from "i18next";
-import { Dropdown, DropdownButton } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { ComponentWide, FontIcon } from "../../../components/shared";
-import classNames from "classnames";
+
 import Languages from "../../languages";
 import UserMenu from "../../user-menu";
 import style from "./header.module.scss";
