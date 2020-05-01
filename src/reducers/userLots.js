@@ -232,7 +232,7 @@ export function* setCreateLotSaga() {
       yield call(getLotsOfUserSaga);
       lots = yield select(userLotsSelector);
     }
-    const lot = lots.userLots.filter(({ _id }) => _id === payload)[0];
+    const lot = lots.userLots.products.filter(({ _id }) => _id === payload)[0];
     if (lot) {
       yield put(
         fillInCreateLot({
