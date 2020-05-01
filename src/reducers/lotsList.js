@@ -18,32 +18,32 @@ export const reset = createAction(RESET);
 
 const initialState = {
   load: false,
-  lots: []
+  lots: { quantity: 0, page: 0, limit: 1, products: [] },
 };
 
 export default handleActions(
   {
-    [lotsRequest]: state => {
+    [lotsRequest]: (state) => {
       return { ...state, load: true };
     },
-    [lotsSuccess]: state => {
+    [lotsSuccess]: (state) => {
       return { ...state, load: false };
     },
     [setlots]: (state, { payload }) => ({ ...state, lots: payload }),
-    [reset]: () => initialState
+    [reset]: () => initialState,
   },
   initialState
 );
 
-export const lotsSelector = state => state[REDUCER_NAME];
+export const lotsSelector = (state) => state[REDUCER_NAME];
 
 export function* lotsRequestSaga() {
   while (true) {
-    yield take(lotsRequest);
+    const { payload = {} } =  yield take(lotsRequest);
 
     try {
       const data = yield apiClient({
-        url: `https://shop-app-brtshk.herokuapp.com/api/products`
+        url: `https://shop-app-brtshk.herokuapp.com/api/products?page=${payload.page || 0}`,
       });
 
       yield put(setlots(data.data));

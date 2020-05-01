@@ -10,25 +10,42 @@ class Userlots extends Component {
   }
 
   callLotConstructor = () => {
-    const {history} = this.props;
-    history && history.push('/lots-constructor')
-  }
+    const { history } = this.props;
+    history && history.push("/lots-constructor");
+  };
+
+  setPage = (page) => {
+    const { userLotsRequest } = this.props;
+    userLotsRequest({ page });
+  };
 
   render() {
     const {
-      userLots: { userLots, load }, ...props
+      userLots: { userLots, load },
+      ...props
     } = this.props;
 
     return (
       <div>
-        <LotsList lots={userLots} pageLoad={load} edit={true} {...props}>
-          <LotsList.AddLot hendler={this.callLotConstructor}/>
+        {/* {console.log('xxxxx', userLots)} */}
+        <LotsList
+          lots={userLots.products}
+          pageLoad={load}
+          edit={true}
+          pagination={{
+            pageCount: Math.ceil(userLots.quantity / userLots.limit),
+            setPage: this.setPage,
+            page: (+userLots.page || 0) + 1,
+          }}
+          {...props}
+        >
+          <LotsList.AddLot hendler={this.callLotConstructor} />
         </LotsList>
       </div>
     );
   }
 }
-const mapStateToProps = state => ({ userLots: userLotsSelector(state) });
+const mapStateToProps = (state) => ({ userLots: userLotsSelector(state) });
 const mapDispatchToProps = { userLotsRequest };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Userlots);

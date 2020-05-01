@@ -35,28 +35,28 @@ const createLotInitial = {
     isValid: true,
     error: "",
     validationRules: { minLength: 5, isRequired: true },
-    fieldType: "label"
+    fieldType: "label",
   },
   description: {
     value: "",
     isValid: true,
     error: "",
     validationRules: { minLength: 10, maxLength: 200, isRequired: true },
-    fieldType: "textarea"
+    fieldType: "textarea",
   },
   urlImage: {
     value: "",
     isValid: true,
     error: "",
     validationRules: { isRequired: false },
-    fieldType: "label"
+    fieldType: "label",
   },
   quantity: {
     value: "",
     isValid: true,
     error: "",
     validationRules: { type: "number", isRequired: true },
-    fieldType: "label"
+    fieldType: "label",
   },
   added: {
     value: "",
@@ -64,86 +64,86 @@ const createLotInitial = {
     error: "",
     validationRules: { isRequired: true },
     fieldType: "label",
-    readOnly: true
+    readOnly: true,
   },
   characteristic: {
     value: "",
     isValid: true,
     error: "",
     validationRules: { minLength: 10, maxLength: 500, isRequired: true },
-    fieldType: "label"
+    fieldType: "label",
   },
   asset: {
     value: "",
     isValid: true,
     error: "",
     validationRules: { isRequired: true },
-    fieldType: "label"
+    fieldType: "label",
   },
   price: {
     value: "",
     isValid: true,
     error: "",
     validationRules: { type: "number", isRequired: true },
-    fieldType: "label"
-  }
+    fieldType: "label",
+  },
 };
 
 const initialState = {
   load: false,
-  userLots: [],
+  userLots: { quantity: 0, page: 0, limit: 1, products: [] },
   createLot: createLotInitial,
-  createlotLoading: false
+  createlotLoading: false,
 };
 
 const setCreateLotValueAction = formHelper.setCreateLotValueAction("createLot");
 
 export default handleActions(
   {
-    [userLotsRequest]: state => {
+    [userLotsRequest]: (state) => {
       return { ...state, load: true };
     },
-    [oneUserLotRequest]: state => {
+    [oneUserLotRequest]: (state) => {
       return { ...state, load: true };
     },
-    [userLotsSuccess]: state => {
+    [userLotsSuccess]: (state) => {
       return { ...state, load: false };
     },
     [setUserLots]: (state, { payload }) => ({ ...state, userLots: payload }),
     [reset]: () => initialState,
-    [createLotRequest]: state => {
+    [createLotRequest]: (state) => {
       return { ...state, createlotLoading: true };
     },
-    [createLotSuccess]: state => {
+    [createLotSuccess]: (state) => {
       return { ...state, createlotLoading: false };
     },
-    [setCreateLot]: state => ({ ...state }),
+    [setCreateLot]: (state) => ({ ...state }),
     [fillInCreateLot]: (state, { payload }) => ({
       ...state,
-      createLot: payload
+      createLot: payload,
     }),
     [setCreateLotValue]: setCreateLotValueAction,
-    [resetCreateLot]: state => ({ ...state, createLot: createLotInitial })
+    [resetCreateLot]: (state) => ({ ...state, createLot: createLotInitial }),
   },
   initialState
 );
 
-export const userLotsSelector = state => state[REDUCER_NAME];
-export const createLotSelector = state => state[REDUCER_NAME].createLot;
-export const createLotAccumulatedSelector = state =>
+export const userLotsSelector = (state) => state[REDUCER_NAME];
+export const createLotSelector = (state) => state[REDUCER_NAME].createLot;
+export const createLotAccumulatedSelector = (state) =>
   formHelper.accumulateFields(state[REDUCER_NAME].createLot);
-export const createlotLoadingSelector = state =>
+export const createlotLoadingSelector = (state) =>
   state[REDUCER_NAME].createlotLoading;
 
-function* getLotsOfUserSaga() {
+function* getLotsOfUserSaga(pageData = {}) {
   yield put(oneUserLotRequest());
   const user = yield select(userSelector);
   const fields = yield select(fildsSelector);
   try {
     const data = yield apiClient({
       params: { token: user.token },
-      url: `https://shop-app-brtshk.herokuapp.com/api/products/userid/${fields.id}?token=${user.token}`,
-      method: "get"
+      url: `https://shop-app-brtshk.herokuapp.com/api/products/userid/${fields.id}?token=${user.token}&page=${pageData.page || 0}`,
+      method: "get",
     });
 
     yield put(setUserLots(data.data));
@@ -156,8 +156,9 @@ function* getLotsOfUserSaga() {
 
 export function* userLotsRequestSaga() {
   while (true) {
-    yield take(userLotsRequest);
-    yield call(getLotsOfUserSaga);
+    const { payload } = yield take(userLotsRequest);
+
+    yield call(getLotsOfUserSaga, payload);
   }
 }
 
@@ -184,17 +185,19 @@ export function* crateLotRequestSaga() {
           params: {
             ...formHelper.accumulateFields(createLot),
             user_id: fields.id,
-            token: user.token
+            token: user.token,
           },
           url: id
             ? `https://shop-app-brtshk.herokuapp.com/api/products/${id}`
             : "https://shop-app-brtshk.herokuapp.com/api/products",
-          method: id ? "put" : "post"
+          method: id ? "put" : "post",
         });
 
         if (data) {
           if (!id) {
-            yield put(setUserLots([...lots.userLots, { ...data.data }]));
+            yield put(
+              setUserLots([...lots.userLots.products, { ...data.data }])
+            );
           }
           // if (id) {
 
@@ -235,21 +238,21 @@ export function* setCreateLotSaga() {
         fillInCreateLot({
           productName: {
             ...createLot.productName,
-            value: lot.productName
+            value: lot.productName,
           },
           description: {
             ...createLot.description,
-            value: lot.description
+            value: lot.description,
           },
           urlImage: { ...createLot.urlImage, value: lot.urlImage },
           quantity: { ...createLot.quantity, value: lot.quantity },
           added: { ...createLot.added, value: lot.added },
           characteristic: {
             ...createLot.characteristic,
-            value: lot.characteristic
+            value: lot.characteristic,
           },
           asset: { ...createLot.asset, value: lot.asset },
-          price: { ...createLot.price, value: lot.price }
+          price: { ...createLot.price, value: lot.price },
         })
       );
     }

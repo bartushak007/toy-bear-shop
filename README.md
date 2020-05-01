@@ -1,3 +1,4 @@
+[link](https://bartushak007.github.io/shop/#/)
 This project was bootstrapped with [Create React App](https://bartushak007.github.io/shop/).
 
 ## Available Scripts

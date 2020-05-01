@@ -10,19 +10,32 @@ class LotsPlace extends Component {
     lotsRequest();
   }
 
+  setPage = (page) => {
+    const { lotsRequest } = this.props;
+    lotsRequest({ page });
+  };
+
   render() {
     const {
-      lots: { lots, load }
+      lots: { lots, load },
     } = this.props;
 
     return (
       <div>
-        <LotsList lots={lots} pageLoad={load} />
+        <LotsList
+          lots={lots.products}
+          pageLoad={load}
+          pagination={{
+            pageCount: Math.ceil(lots.quantity / lots.limit),
+            setPage: this.setPage,
+            page: (+lots.page || 0) + 1,
+          }}
+        />
       </div>
     );
   }
 }
-const mapStateToProps = state => ({ lots: lotsSelector(state) });
+const mapStateToProps = (state) => ({ lots: lotsSelector(state) });
 const mapDispatchToProps = { lotsRequest };
 
 export default connect(mapStateToProps, mapDispatchToProps)(LotsPlace);
