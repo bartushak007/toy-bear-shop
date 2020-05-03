@@ -224,26 +224,26 @@ export function* crateLotRequestSaga() {
         //   const lots = yield select(userLotsSelector);
         //   yield call(getLotsOfUserSaga, { ...lots.userLots });
 
-          // if (!id) {
-          //   yield put(
-          //     setUserLots([...lots.userLots.products, { ...data.data }])
-          //   );
-          // }
-          // if (id) {
+        // if (!id) {
+        //   yield put(
+        //     setUserLots([...lots.userLots.products, { ...data.data }])
+        //   );
+        // }
+        // if (id) {
 
-          //   yield put(
-          //     setUserLots([
-          //       ...lots.userLots.map(({ _id, ...rest }) =>
-          //         id === _id ? { ...data.data } : { _id, ...rest }
-          //       )
-          //     ])
-          //   );
-          // }
+        //   yield put(
+        //     setUserLots([
+        //       ...lots.userLots.map(({ _id, ...rest }) =>
+        //         id === _id ? { ...data.data } : { _id, ...rest }
+        //       )
+        //     ])
+        //   );
+        // }
         // }
         yield put(createLotSuccess());
         yield put(resetCreateLot());
       } catch (e) {
-        console.error("create lot", e);
+        // console.error("create lot", e);
         yield put(createLotSuccess());
       }
     } else {
@@ -255,14 +255,25 @@ export function* crateLotRequestSaga() {
 export function* setCreateLotSaga() {
   while (true) {
     const { payload } = yield take(setCreateLot);
-    const createLot = yield select(createLotSelector);
-    let lots = yield select(userLotsSelector);
 
-    if (!lots.userLots.length) {
-      yield call(getLotsOfUserSaga);
-      lots = yield select(userLotsSelector);
+    const createLot = yield select(createLotSelector);
+
+    const lots = yield select(userLotsSelector);
+    let lot;
+    if (
+      !lots.userLots.length ||
+      lots.userLots.products.some(({ _id }) => _id === payload)
+    ) {
+      const { data } = yield apiClient({
+        params: {},
+        url: `https://shop-app-brtshk.herokuapp.com/api/products/${payload}`,
+        method: "get",
+      });
+      lot = data[0];
+    } else {
+      lot = lots.userLots.products.filter(({ _id }) => _id === payload)[0];
     }
-    const lot = lots.userLots.products.filter(({ _id }) => _id === payload)[0];
+
     if (lot) {
       yield put(
         fillInCreateLot({
