@@ -1,7 +1,8 @@
 import React from "react";
+import classNames from "classnames";
 import Image from "../shared/image";
 import style from "./lot.module.scss";
-import Button from "../shared/button";
+import { Button, FontIcon } from "../shared";
 
 const Lot = ({
   _id,
@@ -15,7 +16,9 @@ const Lot = ({
   asset,
   user_id,
   edit,
-  history
+  history,
+  toggleSelected,
+  selectedProducts,
 }) => {
   const editHandler = () => history && history.push(`/lots-constructor/${_id}`);
 
@@ -25,9 +28,21 @@ const Lot = ({
         <div className={style.lot__image}>
           <Image src={urlImage} style={{ height: "200px" }} />
           {edit && (
-            <Button className={style.lot__edit} handler={editHandler}>
-              Edit
-            </Button>
+            <>
+              <Button className={style.lot__edit} handler={editHandler}>
+                Edit
+              </Button>
+              <Button
+                className={classNames(style.lot__edit, style.lot__edit_remove)}
+                handler={toggleSelected}
+              >
+                {selectedProducts.includes(_id) ? (
+                  <FontIcon iconKey={"checkMArk"} style={{width:"10px"}} />
+                ) : (
+                  "x"
+                )}
+              </Button>
+            </>
           )}
         </div>
         <div className={style.lot__textContainer}>

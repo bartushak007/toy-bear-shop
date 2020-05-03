@@ -16,7 +16,7 @@ const SET_CREATE_LOT = "USER_LOTS/SET_CREATE_LOT";
 const SET_CREATE_LOT_VALUE = "USER_LOTS/SET_CREATE_LOT_VALUE";
 const CREATE_LOT_SUCCESS = "USER_LOTS/CREATE_LOT_SUCCESS";
 const FILL_IN_CREATE_LOT = "USER_LOTS/FILL_IN_CREATE_LOT";
-
+const USER_LOTS_DELETE_REQUEST = "USER_LOTS_DELETE_REQUEST";
 export const userLotsRequest = createAction(USER_LOTS_REQUEST);
 export const oneUserLotRequest = createAction("oneUserLotRequest");
 export const userLotsSuccess = createAction(USER_LOTS_SUCCSESS);
@@ -28,6 +28,7 @@ export const setCreateLotValue = createAction(SET_CREATE_LOT_VALUE);
 export const createLotSuccess = createAction(CREATE_LOT_SUCCESS);
 export const reset = createAction(RESET);
 export const resetCreateLot = createAction(RESET_CREATE_LOT);
+export const userLotsDeleteRequest = createAction(USER_LOTS_DELETE_REQUEST);
 
 const createLotInitial = {
   productName: {
@@ -58,14 +59,14 @@ const createLotInitial = {
     validationRules: { type: "number", isRequired: true },
     fieldType: "label",
   },
-  added: {
-    value: "",
-    isValid: true,
-    error: "",
-    validationRules: { isRequired: true },
-    fieldType: "label",
-    readOnly: true,
-  },
+  // added: {
+  //   value: "",
+  //   isValid: true,
+  //   error: "",
+  //   validationRules: { isRequired: true },
+  //   fieldType: "label",
+  //   readOnly: true,
+  // },
   characteristic: {
     value: "",
     isValid: true,
@@ -124,6 +125,7 @@ export default handleActions(
     }),
     [setCreateLotValue]: setCreateLotValueAction,
     [resetCreateLot]: (state) => ({ ...state, createLot: createLotInitial }),
+    [userLotsDeleteRequest]: (state) => ({ ...state, load: true }),
   },
   initialState
 );
@@ -142,7 +144,9 @@ function* getLotsOfUserSaga(pageData = {}) {
   try {
     const data = yield apiClient({
       params: { token: user.token },
-      url: `https://shop-app-brtshk.herokuapp.com/api/products/userid/${fields.id}?token=${user.token}&page=${pageData.page || 0}`,
+      url: `https://shop-app-brtshk.herokuapp.com/api/products/userid/${
+        fields.id
+      }?token=${user.token}&page=${pageData.page || 0}`,
       method: "get",
     });
 
@@ -159,6 +163,28 @@ export function* userLotsRequestSaga() {
     const { payload } = yield take(userLotsRequest);
 
     yield call(getLotsOfUserSaga, payload);
+  }
+}
+
+export function* deleteProductsSaga() {
+  while (true) {
+    const { payload } = yield take(userLotsDeleteRequest);
+
+    // console.log("userLotsDeleteRequest", payload);
+    const user = yield select(userSelector);
+    const lots = yield select(userLotsSelector);
+    try {
+      const data = yield apiClient({
+        params: { token: user.token, ids: payload },
+        url: `https://shop-app-brtshk.herokuapp.com/api/products/`,
+        method: "delete",
+      });
+      yield call(getLotsOfUserSaga, { ...lots.userLots });
+      yield put(userLotsSuccess());
+    } catch (e) {
+      console.error("get user lots", e);
+      yield put(userLotsSuccess());
+    }
   }
 }
 
@@ -193,12 +219,16 @@ export function* crateLotRequestSaga() {
           method: id ? "put" : "post",
         });
 
-        if (data) {
-          if (!id) {
-            yield put(
-              setUserLots([...lots.userLots.products, { ...data.data }])
-            );
-          }
+        // if (data) {
+        //   const user = yield select(userSelector);
+        //   const lots = yield select(userLotsSelector);
+        //   yield call(getLotsOfUserSaga, { ...lots.userLots });
+
+          // if (!id) {
+          //   yield put(
+          //     setUserLots([...lots.userLots.products, { ...data.data }])
+          //   );
+          // }
           // if (id) {
 
           //   yield put(
@@ -209,7 +239,7 @@ export function* crateLotRequestSaga() {
           //     ])
           //   );
           // }
-        }
+        // }
         yield put(createLotSuccess());
         yield put(resetCreateLot());
       } catch (e) {
@@ -260,5 +290,10 @@ export function* setCreateLotSaga() {
 }
 
 export function* saga() {
-  yield all([userLotsRequestSaga(), crateLotRequestSaga(), setCreateLotSaga()]);
+  yield all([
+    userLotsRequestSaga(),
+    crateLotRequestSaga(),
+    setCreateLotSaga(),
+    deleteProductsSaga(),
+  ]);
 }

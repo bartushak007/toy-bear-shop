@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { userLotsRequest, userLotsSelector } from "../../reducers/userLots";
+import { userLotsRequest, userLotsSelector, userLotsDeleteRequest } from "../../reducers/userLots";
 import LotsList from "../../components/lots-list";
 
 class Userlots extends Component {
@@ -22,6 +22,7 @@ class Userlots extends Component {
   render() {
     const {
       userLots: { userLots, load },
+      userLotsDeleteRequest,
       ...props
     } = this.props;
 
@@ -30,6 +31,7 @@ class Userlots extends Component {
         {/* {console.log('xxxxx', userLots)} */}
         <LotsList
           lots={userLots.products}
+          deleteProducts={userLotsDeleteRequest}
           pageLoad={load}
           edit={true}
           pagination={{
@@ -46,6 +48,6 @@ class Userlots extends Component {
   }
 }
 const mapStateToProps = (state) => ({ userLots: userLotsSelector(state) });
-const mapDispatchToProps = { userLotsRequest };
+const mapDispatchToProps = { userLotsRequest, userLotsDeleteRequest };
 
 export default connect(mapStateToProps, mapDispatchToProps)(Userlots);

@@ -1,7 +1,7 @@
 import React from "react";
 import {} from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import { faSearch, faCheck } from "@fortawesome/free-solid-svg-icons";
 import classNames from "classnames";
 import style from "./font-icon.module.scss";
 import {
@@ -13,7 +13,8 @@ const icons = {
   telegram: faTelegramPlane,
   instagram: faInstagram,
   facebook: faFacebook,
-  search: faSearch
+  search: faSearch,
+  checkMArk: faCheck,
 };
 
 const FontIcon = ({
@@ -22,6 +23,7 @@ const FontIcon = ({
   className,
   iconClassName,
   blank,
+  style,
   click = () => {}
 }) => {
   const icon = (
@@ -39,6 +41,7 @@ const FontIcon = ({
           className={classNames(style.fontIcon, className)}
           href={link || "#"}
           target={link && blank ? "_blank" : "_self"}
+          style={style}
         >
           {icon}
         </a>
